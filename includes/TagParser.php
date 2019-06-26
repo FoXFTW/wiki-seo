@@ -78,7 +78,8 @@ class TagParser {
 	public static function extractSeoDataFromHtml( $html ) {
 		$params = [];
 
-		if ( !preg_match_all( '/^WikiSEO:([:a-zA-Z_-]+);([0-9a-zA-Z\+\/=]+)[\n|\r]?$/m', $html, $matches, PREG_SET_ORDER ) ) {
+		$pattern = '/^WikiSEO:([:a-zA-Z_-]+);([0-9a-zA-Z\+\/=]+)[\n|\r]?$/m';
+		if ( !preg_match_all( $pattern, $html, $matches, PREG_SET_ORDER ) ) {
 			return $params;
 		}
 

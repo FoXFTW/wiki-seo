@@ -10,7 +10,10 @@ use Html;
  * @package Octfx\WikiSEO\Generator\Plugins
  */
 class Twitter extends OpenGraph {
-	protected static $tags = [ 'type', 'image', 'image_width', 'image_height', 'description', 'keywords', 'locale', 'site_name', 'published_time', 'modified_time', 'twitter_site', ];
+	protected static $tags = [
+		'type', 'image', 'image_width', 'image_height', 'description', 'keywords', 'locale', 'site_name',
+		'published_time', 'modified_time', 'twitter_site',
+	];
 
 	/**
 	 * Page title property name
@@ -40,7 +43,12 @@ class Twitter extends OpenGraph {
 
 		parent::addMetadata();
 
-		$this->outputPage->addHeadItem( 'twitter:card', Html::element( 'meta', [ self::$htmlElementPropertyKey => 'twitter:card', self::$htmlElementContentKey => 'summary' ] ) );
+		$metaAttrs = [
+			self::$htmlElementPropertyKey => 'twitter:card',
+			self::$htmlElementContentKey => 'summary',
+		];
+		$metaElement = Html::element( 'meta', $metaAttrs );
+		$this->outputPage->addHeadItem( 'twitter:card', $metaElement );
 	}
 
 	/**
@@ -51,9 +59,18 @@ class Twitter extends OpenGraph {
 		global $wgTwitterSiteHandle;
 
 		if ( $wgTwitterSiteHandle !== null ) {
-			unset( self::$tags['twitter_site'], self::$conversions['twitter_site'], $this->metadata['twitter_site'] );
+			unset(
+				self::$tags['twitter_site'],
+				self::$conversions['twitter_site'],
+				$this->metadata['twitter_site']
+			);
 
-			$this->outputPage->addHeadItem( 'twitter:site', Html::element( 'meta', [ self::$htmlElementPropertyKey => 'twitter:site', self::$htmlElementContentKey => $wgTwitterSiteHandle ] ) );
+			$metaAttrs = [
+				self::$htmlElementPropertyKey => 'twitter:site',
+				self::$htmlElementContentKey => $wgTwitterSiteHandle,
+			];
+			$metaElement = Html::element( 'meta', $metaAttrs );
+			$this->outputPage->addHeadItem( 'twitter:site', $metaElement );
 		}
 	}
 }

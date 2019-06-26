@@ -35,6 +35,10 @@ class Hooks {
 	public static function onParserFirstCallInit( Parser $parser ) {
 		$parser->setHook( 'seo', 'Octfx\WikiSEO\WikiSEO::fromTag' );
 
-		$parser->setFunctionHook( 'seo', 'Octfx\WikiSEO\WikiSEO::fromParserFunction', Parser::SFH_OBJECT_ARGS );
+		$parser->setFunctionHook(
+			'seo',
+			[ WikiSEO::class, 'fromParserFunction' ],
+			Parser::SFH_OBJECT_ARGS
+		);
 	}
 }

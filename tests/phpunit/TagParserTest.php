@@ -54,7 +54,10 @@ class TagParserTest extends MediaWikiTestCase {
 
 		$this->assertCount( 1, $parsedArgs );
 		$this->assertArrayHasKey( 'description', $parsedArgs );
-		$this->assertEquals( 'First Equal separates = Second Equal is included', $parsedArgs['description'] );
+		$this->assertEquals(
+			'First Equal separates = Second Equal is included',
+			$parsedArgs['description']
+		);
 	}
 
 	/**
