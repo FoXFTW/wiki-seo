@@ -126,6 +126,7 @@ class OpenGraph implements GeneratorInterface {
 	 */
 	public function addMetadata() {
 		$this->addTitleMeta();
+		$this->addSiteName();
 
 		if ( $this->outputPage->getTitle() !== null ) {
 			$url = $this->outputPage->getTitle()->getFullURL();
@@ -160,5 +161,22 @@ class OpenGraph implements GeneratorInterface {
 			self::$htmlElementPropertyKey => $this->titlePropertyName,
 			self::$htmlElementContentKey  => $this->outputPage->getHTMLTitle()
 		] ) );
+	}
+	
+	/**
+	 * Default site_name value to $wgSitename if site_name is not defined on-page
+	 *
+	 * @return void
+	 */
+	
+	private function addSiteName() {
+		global $wgSitename;
+
+		if ( !isset( $this->metadata['site_name']) && $wgSitename !== null ) {
+			$this->outputPage->addHeadItem( 'og:site_name', Html::element( 'meta', [
+				self::$htmlElementPropertyKey => 'og:site_name',
+				self::$htmlElementContentKey => $wgSitename
+			] ) );
+		}
 	}
 }
