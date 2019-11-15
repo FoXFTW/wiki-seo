@@ -187,7 +187,7 @@ class SchemaOrg implements GeneratorInterface {
 			$sitename = '';
 		}
 
-		global $wgServer;
+		MediaWikiServices::getInstance()->getMainConfig()->get( 'Server' );
 
 				try {
 			$logo = MediaWikiServices::getInstance()->getMainConfig()->get( 'Logo' );
