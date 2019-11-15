@@ -105,6 +105,7 @@ class SchemaOrg implements GeneratorInterface {
 			'name'     => $this->outputPage->getHTMLTitle(),
 			'headline' => $this->outputPage->getHTMLTitle(),
 			'mainEntityOfPage' => $this->outputPage->getDisplayTitle(),
+			'license' => $this->getRights(),
 		];
 
 		if ( $this->outputPage->getTitle() !== null ) {
@@ -125,7 +126,6 @@ class SchemaOrg implements GeneratorInterface {
 			}
 		}
 
-
 		$meta['image'] = $this->getImageMetadata();
 		$meta['author'] = $this->getAuthorMetadata();
 		$meta['publisher'] = $this->getAuthorMetadata();
@@ -133,16 +133,16 @@ class SchemaOrg implements GeneratorInterface {
 
 		$this->outputPage->addHeadItem( 'jsonld-metadata', sprintf( $template, json_encode( $meta ) ) );
 	}
-	
+
 	/**
 	* Generate proper schema.org type in order to pass validation
-	* 
+	*
 	* @return string
 	*/
-	
+
 	private function getTypeMetadata() {
 		$data = $this->metadata['type'];
-		if (!isset ($this->metadata['type'])) {
+		if ( !isset( $this->metadata['type'] ) ) {
 			$data = "article";
 		}
 		return $data;
@@ -153,7 +153,7 @@ class SchemaOrg implements GeneratorInterface {
 	 *
 	 * @return array
 	 */
-	 
+
 	private function getImageMetadata() {
 		$data = [
 			'@type' => 'ImageObject',
@@ -170,7 +170,7 @@ class SchemaOrg implements GeneratorInterface {
 				// Fallthrough
 			}
 		}
-		
+
 		return $image;
 	}
 
@@ -186,19 +186,19 @@ class SchemaOrg implements GeneratorInterface {
 			// Empty tags will be ignored
 			$sitename = '';
 		}
-		
+
 		global $wgServer;
-		
+
 				try {
 			$logo = MediaWikiServices::getInstance()->getMainConfig()->get( 'Logo' );
 			$logo = wfExpandUrl( $logo );
 			$data['url'] = $logo;
-		} catch ( Exception $e ) {
+		  } catch ( Exception $e ) {
 			// Uh oh either there was a ConfigException or there was an error expanding the URL.
 			// We'll bail out.
 			$data = [];
-		}
-		
+		  }
+
 		$logoLine = [
 			'@type' => 'ImageObject',
 			'url' => $logo,
@@ -236,4 +236,17 @@ class SchemaOrg implements GeneratorInterface {
 
 		return [];
 	}
+
+	private function getRights() {
+		global $wgRightsPage;
+		global $wgRightsUrl;
+		if ( $wgRightsPage !== null ) {
+			$rights = $wgRightsUrlPage;
+		} elseif ( $wgRightsUrl !== null ) {
+		$rights = $wgRightsUrl;
+		} else {
+			$rights = "Unknown";
+		}
+		return $rights;
+ }
 }

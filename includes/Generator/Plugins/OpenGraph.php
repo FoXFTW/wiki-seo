@@ -162,17 +162,11 @@ class OpenGraph implements GeneratorInterface {
 			self::$htmlElementContentKey  => $this->outputPage->getHTMLTitle()
 		] ) );
 	}
-	
-	/**
-	 * Default site_name value to $wgSitename if site_name is not defined on-page
-	 *
-	 * @return void
-	 */
-	
+
 	private function addSiteName() {
 		global $wgSitename;
 
-		if ( !isset( $this->metadata['site_name']) && $wgSitename !== null ) {
+		if ( !isset( $this->metadata['site_name'] ) && $wgSitename !== null ) {
 			$this->outputPage->addHeadItem( 'og:site_name', Html::element( 'meta', [
 				self::$htmlElementPropertyKey => 'og:site_name',
 				self::$htmlElementContentKey => $wgSitename
