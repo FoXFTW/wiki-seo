@@ -104,8 +104,7 @@ class SchemaOrg implements GeneratorInterface {
 			'type'     => $this->getTypeMetadata(),
 			'name'     => $this->outputPage->getHTMLTitle(),
 			'headline' => $this->outputPage->getHTMLTitle(),
-			'mainEntityOfPage' => $this->outputPage->getDisplayTitle(),
-			'license' => $this->getRights(),
+			'mainEntityOfPage' => $this->outputPage->getPageTitle(),
 		];
 
 		if ( $this->outputPage->getTitle() !== null ) {
@@ -187,7 +186,7 @@ class SchemaOrg implements GeneratorInterface {
 			$sitename = '';
 		}
 
-		MediaWikiServices::getInstance()->getMainConfig()->get( 'Server' );
+		$server = MediaWikiServices::getInstance()->getMainConfig()->get( 'Server' );
 
 				try {
 			$logo = MediaWikiServices::getInstance()->getMainConfig()->get( 'Logo' );
@@ -196,7 +195,7 @@ class SchemaOrg implements GeneratorInterface {
 		  } catch ( Exception $e ) {
 			// Uh oh either there was a ConfigException or there was an error expanding the URL.
 			// We'll bail out.
-			$data = [];
+			$logo = [];
 		  }
 
 		$logoLine = [
@@ -207,7 +206,7 @@ class SchemaOrg implements GeneratorInterface {
 		return [
 			'@type' => 'Organization',
 			'name' => $sitename,
-			'url' => $wgServer,
+			'url' => $server,
 			'logo' => $logoLine
 		];
 	}
