@@ -164,7 +164,7 @@ class OpenGraph implements GeneratorInterface {
 	}
 
 	private function addSiteName() {
-		global $wgSitename;
+		MediaWikiServices::getInstance()->getMainConfig()->get( 'Sitename' );
 
 		if ( !isset( $this->metadata['site_name'] ) && $wgSitename !== null ) {
 			$this->outputPage->addHeadItem( 'og:site_name', Html::element( 'meta', [
