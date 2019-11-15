@@ -236,17 +236,4 @@ class SchemaOrg implements GeneratorInterface {
 
 		return [];
 	}
-
-	private function getRights() {
-		global $wgRightsPage;
-		global $wgRightsUrl;
-		if ( $wgRightsPage !== null ) {
-			$rights = $wgRightsUrlPage;
-		} elseif ( $wgRightsUrl !== null ) {
-		$rights = $wgRightsUrl;
-		} else {
-			$rights = "Unknown";
-		}
-		return $rights;
- }
 }
