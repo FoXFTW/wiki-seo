@@ -19,11 +19,13 @@
 
 namespace MediaWiki\Extension\WikiSEO\Generator\Plugins;
 
+use ConfigException;
 use Html;
 use MediaWiki\Extension\WikiSEO\Generator\GeneratorInterface;
 use MediaWiki\Extension\WikiSEO\Generator\Plugins\FileMetadataTrait as FileMetadata;
 use MediaWiki\Extension\WikiSEO\Generator\Plugins\RevisionMetadataTrait as RevisionMetadata;
 use MediaWiki\Extension\WikiSEO\WikiSEO;
+use MediaWiki\MediaWikiServices;
 use OutputPage;
 
 /**
@@ -159,17 +161,26 @@ class OpenGraph implements GeneratorInterface {
 	protected function addTitleMeta() {
 		$this->outputPage->addHeadItem( $this->titlePropertyName, Html::element( 'meta', [
 			self::$htmlElementPropertyKey => $this->titlePropertyName,
-			self::$htmlElementContentKey  => $this->outputPage->getHTMLTitle()
+			self::$htmlElementContentKey => $this->outputPage->getHTMLTitle(),
 		] ) );
 	}
 
+	/**
+	 * Add the sitename as og:site_name
+	 *
+	 * @return void
+	 */
 	private function addSiteName() {
-		MediaWikiServices::getInstance()->getMainConfig()->get( 'Sitename' );
+		try {
+			$sitename = MediaWikiServices::getInstance()->getMainConfig()->get( 'Sitename' );
+		} catch ( ConfigException $e ) {
+			$sitename = null;
+		}
 
-		if ( !isset( $this->metadata['site_name'] ) && $wgSitename !== null ) {
+		if ( !isset( $this->metadata['site_name'] ) && $sitename !== null ) {
 			$this->outputPage->addHeadItem( 'og:site_name', Html::element( 'meta', [
 				self::$htmlElementPropertyKey => 'og:site_name',
-				self::$htmlElementContentKey => $wgSitename
+				self::$htmlElementContentKey => $sitename,
 			] ) );
 		}
 	}

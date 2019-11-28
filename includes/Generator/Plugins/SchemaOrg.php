@@ -138,13 +138,8 @@ class SchemaOrg implements GeneratorInterface {
 	*
 	* @return string
 	*/
-
 	private function getTypeMetadata() {
-		$data = $this->metadata['type'];
-		if ( !isset( $this->metadata['type'] ) ) {
-			$data = "article";
-		}
-		return $data;
+		return $this->metadata['type'] ?? 'article';
 	}
 
 	/**
@@ -152,7 +147,6 @@ class SchemaOrg implements GeneratorInterface {
 	 *
 	 * @return array
 	 */
-
 	private function getImageMetadata() {
 		$data = [
 			'@type' => 'ImageObject',
@@ -170,7 +164,8 @@ class SchemaOrg implements GeneratorInterface {
 			}
 		}
 
-		return $image;
+		// Logo as Fallback
+		return $this->getLogoMetadata();
 	}
 
 	/**
@@ -186,29 +181,47 @@ class SchemaOrg implements GeneratorInterface {
 			$sitename = '';
 		}
 
-		$server = MediaWikiServices::getInstance()->getMainConfig()->get( 'Server' );
+		try {
+			$server = MediaWikiServices::getInstance()->getMainConfig()->get( 'Server' );
+		} catch ( Exception $e ) {
+			$server = '';
+		}
 
-				try {
-			$logo = MediaWikiServices::getInstance()->getMainConfig()->get( 'Logo' );
-			$logo = wfExpandUrl( $logo );
-			$data['url'] = $logo;
-		  } catch ( Exception $e ) {
-			// Uh oh either there was a ConfigException or there was an error expanding the URL.
-			// We'll bail out.
-			$logo = [];
-		  }
+		$logo = $this->getLogoMetadata();
 
-		$logoLine = [
-			'@type' => 'ImageObject',
-			'url' => $logo,
-			'caption' => $sitename
-		];
+		if ( !empty( $logo ) ) {
+			$logo['caption'] = $sitename;
+		}
+
 		return [
 			'@type' => 'Organization',
 			'name' => $sitename,
 			'url' => $server,
-			'logo' => $logoLine
+			'logo' => $logo,
 		];
+	}
+
+	/**
+	 * Tries to get the main logo form config as an expanded url
+	 *
+	 * @return array
+	 */
+	private function getLogoMetadata() {
+		$data = [
+			'@type' => 'ImageObject',
+		];
+
+		try {
+			$logo = MediaWikiServices::getInstance()->getMainConfig()->get( 'Logo' );
+			$logo = wfExpandUrl( $logo );
+			$data['url'] = $logo;
+		} catch ( Exception $e ) {
+			// Uh oh either there was a ConfigException or there was an error expanding the URL.
+			// We'll bail out.
+			$data = [];
+		}
+
+		return $data;
 	}
 
 	/**
