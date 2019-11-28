@@ -101,8 +101,10 @@ class SchemaOrg implements GeneratorInterface {
 
 		$meta = [
 			'@context' => 'http://schema.org',
+			'type'     => $this->getTypeMetadata(),
 			'name'     => $this->outputPage->getHTMLTitle(),
 			'headline' => $this->outputPage->getHTMLTitle(),
+			'mainEntityOfPage' => $this->outputPage->getPageTitle(),
 		];
 
 		if ( $this->outputPage->getTitle() !== null ) {
@@ -132,10 +134,25 @@ class SchemaOrg implements GeneratorInterface {
 	}
 
 	/**
+	* Generate proper schema.org type in order to pass validation
+	*
+	* @return string
+	*/
+
+	private function getTypeMetadata() {
+		$data = $this->metadata['type'];
+		if ( !isset( $this->metadata['type'] ) ) {
+			$data = "article";
+		}
+		return $data;
+	}
+
+	/**
 	 * Generate jsonld metadata from the wiki logo or supplied file name
 	 *
 	 * @return array
 	 */
+
 	private function getImageMetadata() {
 		$data = [
 			'@type' => 'ImageObject',
@@ -153,17 +170,7 @@ class SchemaOrg implements GeneratorInterface {
 			}
 		}
 
-		try {
-			$logo = MediaWikiServices::getInstance()->getMainConfig()->get( 'Logo' );
-			$logo = wfExpandUrl( $logo );
-			$data['url'] = $logo;
-		} catch ( Exception $e ) {
-			// Uh oh either there was a ConfigException or there was an error expanding the URL.
-			// We'll bail out.
-			$data = [];
-		}
-
-		return $data;
+		return $image;
 	}
 
 	/**
@@ -179,9 +186,28 @@ class SchemaOrg implements GeneratorInterface {
 			$sitename = '';
 		}
 
+		$server = MediaWikiServices::getInstance()->getMainConfig()->get( 'Server' );
+
+				try {
+			$logo = MediaWikiServices::getInstance()->getMainConfig()->get( 'Logo' );
+			$logo = wfExpandUrl( $logo );
+			$data['url'] = $logo;
+		  } catch ( Exception $e ) {
+			// Uh oh either there was a ConfigException or there was an error expanding the URL.
+			// We'll bail out.
+			$logo = [];
+		  }
+
+		$logoLine = [
+			'@type' => 'ImageObject',
+			'url' => $logo,
+			'caption' => $sitename
+		];
 		return [
 			'@type' => 'Organization',
 			'name' => $sitename,
+			'url' => $server,
+			'logo' => $logoLine
 		];
 	}
 
