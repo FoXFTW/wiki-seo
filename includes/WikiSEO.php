@@ -123,7 +123,7 @@ class WikiSEO {
 
 		$result =
 			$this->loadPagePropsFromDb( $pageId ) ??
-			$this->loadPagePropsFromOutputPage( $outputPage );
+			$this->loadPagePropsFromOutputPage( $outputPage ) ?? [];
 
 		$this->setMetadata( $result );
 	}
@@ -148,8 +148,10 @@ class WikiSEO {
 		$result = null;
 
 		if ( $propValue !== false ) {
+			$result = [];
+
 			foreach ( $propValue as $row ) {
-				$result[$row->pp_propname] = $row->pp_value;
+				$result[$row->pp_propname] = unserialize( $row->pp_value, false );
 			}
 		}
 
@@ -173,7 +175,7 @@ class WikiSEO {
 			}
 		}
 
-		return $result;
+		return empty( $result ) ? [] : $result;
 	}
 
 	/**
@@ -304,7 +306,7 @@ class WikiSEO {
 	private function saveMetadataToProps( ParserOutput $outputPage ) {
 		foreach ( $this->metadata as $key => $value ) {
 			if ( $outputPage->getProperty( $key ) === false ) {
-				$outputPage->setProperty( $key, $value );
+				$outputPage->setProperty( $key, serialize( $value ) );
 			}
 		}
 	}
