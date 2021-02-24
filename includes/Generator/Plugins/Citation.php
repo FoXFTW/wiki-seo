@@ -46,10 +46,7 @@ class Citation extends AbstractBaseGenerator implements GeneratorInterface {
 		'citation_issn',
 		'citation_author',
 		'citation_author_institution',
-		'citation_author_institution',
 		'citation_author_email',
-		'citation_author',
-		'citation_author_institution',
 	];
 
 	/**
@@ -65,9 +62,19 @@ class Citation extends AbstractBaseGenerator implements GeneratorInterface {
 	 */
 	public function addMetadata(): void {
 		foreach ( $this->tags as $tag ) {
-			if ( array_key_exists( $tag, $this->metadata ) ) {
-				$this->outputPage->addMeta( $tag, $this->metadata[$tag] );
+			if ( !array_key_exists( $tag, $this->metadata ) ) {
+				continue;
 			}
+
+			if ( $tag === 'citation_author' ) {
+				foreach ( explode( ';', $this->metadata[$tag] ) as $author ) {
+					$this->outputPage->addMeta( $tag, $author );
+				}
+
+				unset( $this->metadata[$tag] );
+			}
+
+			$this->outputPage->addMeta( $tag, $this->metadata[$tag] );
 		}
 	}
 
