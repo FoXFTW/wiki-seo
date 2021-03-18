@@ -20,6 +20,7 @@
 namespace MediaWiki\Extension\WikiSEO;
 
 use ConfigException;
+use ExtensionDependencyError;
 use MediaWiki\Extension\WikiSEO\Generator\GeneratorInterface;
 use MediaWiki\Extension\WikiSEO\Generator\MetaTag;
 use MediaWiki\MediaWikiServices;
