@@ -303,7 +303,7 @@ Usage: $wgWikiSeoNoindexPageTitles = [ 'Custom_Title', 'Main_Page' ];
 ### $wgWikiSeoEnableAutoDescription
 Set to true to try to request a description from textextracts, if no description was given, or the description key is set to 'textextracts' or 'auto'.  
 This requires Extension:TextExtracts to be loaded.  
-The description is generated when saving the page after an edit.
+The description is generated on the first page view with the feature enabled and after the page is edited.
 
 Usage: $wgWikiSeoEnableAutoDescription = true;
 
