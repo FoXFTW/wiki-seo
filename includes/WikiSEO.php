@@ -30,6 +30,7 @@ use PPFrame;
 use ReflectionClass;
 use ReflectionException;
 use RuntimeException;
+use Title;
 use WebRequest;
 
 class WikiSEO {
@@ -153,6 +154,14 @@ class WikiSEO {
 	 */
 	public function addMetadataToPage( OutputPage $out ): void {
 		$this->modifyPageTitle( $out );
+		
+		$this->loadDescriptionFromApi( $out->getTitle() );
+		$key = 'description';
+		if ( $out->getProperty( $key ) === false &&
+			isset( $this->metadata['description'] ) &&
+			!empty( $this->metadata['description'] ) ) {
+			$out->setProperty( $key, $this->metadata[$key] );
+		}
 
 		MediaWikiServices::getInstance()->getHookContainer()->run(
 			'WikiSEOPreAddMetadata',
@@ -385,6 +394,33 @@ class WikiSEO {
 				)
 			)
 		);
+	}
+
+	/**
+	 * @param Title $title
+	 * @throws ExtensionDependencyError
+	 */
+	private function loadDescriptionFromApi( Title $title ): void {
+		$autoEnabled = MediaWikiServices::getInstance()->getMainConfig()->get( 'WikiSeoEnableAutoDescription' );
+		if ( (bool)$autoEnabled === false ) {
+			return;
+		}
+
+		if ( isset( $this->metadata['description'] ) &&
+			!in_array( $this->metadata['description'], [ 'textextracts', 'auto' ] ) ) {
+			return;
+		}
+
+		$descriptor = new ApiDescription(
+			$title,
+			MediaWikiServices::getInstance()->getMainConfig()->get( 'WikiSeoTryCleanAutoDescription' ) === true
+		);
+
+		try {
+			$this->metadata['description'] = $descriptor->getDescription();
+		} catch ( ExtensionDependencyError $e ) {
+			wfLogWarning( $e->getMessage() );
+		}
 	}
 
 	/**
