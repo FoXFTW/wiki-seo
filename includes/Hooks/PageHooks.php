@@ -22,8 +22,6 @@ declare( strict_types=1 );
 namespace MediaWiki\Extension\WikiSEO\Hooks;
 
 use CommentStoreComment;
-use ExtensionDependencyError;
-use MediaWiki\Extension\WikiSEO\ApiDescription;
 use MediaWiki\Extension\WikiSEO\WikiSEO;
 use MediaWiki\Hook\BeforePageDisplayHook;
 use MediaWiki\MediaWikiServices;
@@ -34,7 +32,6 @@ use OutputPage;
 use ParserOutput;
 use Skin;
 use Status;
-use Title;
 
 /**
  * Hooks to run relating the page
@@ -62,7 +59,6 @@ class PageHooks implements BeforePageDisplayHook, MultiContentSaveHook {
 	 * @param int $flags
 	 * @param Status $status
 	 * @return void
-	 * @throws ExtensionDependencyError
 	 */
 	public function onMultiContentSave( $renderedRevision, $user, $summary, $flags, $status ): void {
 		$output = $renderedRevision->getRevisionParserOutput();
