@@ -154,14 +154,8 @@ class WikiSEO {
 	 */
 	public function addMetadataToPage( OutputPage $out ): void {
 		$this->modifyPageTitle( $out );
-		
+
 		$this->loadDescriptionFromApi( $out->getTitle() );
-		$key = 'description';
-		if ( $out->getProperty( $key ) === false &&
-			isset( $this->metadata['description'] ) &&
-			!empty( $this->metadata['description'] ) ) {
-			$out->setProperty( $key, $this->metadata[$key] );
-		}
 
 		MediaWikiServices::getInstance()->getHookContainer()->run(
 			'WikiSEOPreAddMetadata',
