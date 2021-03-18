@@ -76,6 +76,6 @@ class PageHooks implements BeforePageDisplayHook, MultiContentSaveHook {
 			return;
 		}
 
-		$output->setProperty( 'description', '' );
+		$output->unsetProperty( 'description' );
 	}
 }
