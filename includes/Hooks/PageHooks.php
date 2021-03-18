@@ -78,24 +78,4 @@ class PageHooks implements BeforePageDisplayHook, MultiContentSaveHook {
 
 		$output->setProperty( 'description', '' );
 	}
-
-	/**
-	 * @param string $title
-	 * @return string|null
-	 * @throws ExtensionDependencyError
-	 */
-	private function loadDescriptionFromApi( string $title ): ?string {
-		$descriptor = new ApiDescription(
-			Title::newFromText( $title ),
-			MediaWikiServices::getInstance()->getMainConfig()->get( 'WikiSeoTryCleanAutoDescription' ) === true
-		);
-
-		try {
-			return $descriptor->getDescription();
-		} catch ( ExtensionDependencyError $e ) {
-			wfLogWarning( $e->getMessage() );
-		}
-
-		return null;
-	}
 }
