@@ -76,22 +76,7 @@ class PageHooks implements BeforePageDisplayHook, MultiContentSaveHook {
 			return;
 		}
 
-		$this->saveAutoDescription( $output );
-	}
-
-	/**
-	 * @param ParserOutput $output
-	 * @throws ExtensionDependencyError
-	 */
-	private function saveAutoDescription( ParserOutput $output ): void {
-		$description = $this->loadDescriptionFromApi( $output->getTitleText() );
-
-		if ( $description === null || $description === '' ) {
-			// This will only run for new pages
-			$description = trim( substr( strip_tags( $output->getText() ), 0, 160 ) );
-		}
-
-		$output->setProperty( 'description', $description );
+		$output->setProperty( 'description', '' );
 	}
 
 	/**
