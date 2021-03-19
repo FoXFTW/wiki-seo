@@ -157,7 +157,7 @@ class WikiSEO {
 	 */
 	public function addMetadataToPage( OutputPage $out ): void {
 		$request = $out->getRequest();
-		if ( $out->isArticle() && !$request->getRawVal('diff') ) {
+		if ( $out->isArticle() && $request->getRawVal('diff', null ) !== null ) {
 			$this->modifyPageTitle( $out );
 		}
 
