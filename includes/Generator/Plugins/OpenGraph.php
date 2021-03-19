@@ -180,7 +180,7 @@ class OpenGraph extends AbstractBaseGenerator implements GeneratorInterface {
 			$this->titlePropertyName, Html::element(
 				'meta', [
 					self::$htmlElementPropertyKey => $this->titlePropertyName,
-					self::$htmlElementContentKey => $this->outputPage->getHTMLTitle(),
+					self::$htmlElementContentKey => $this->outputPage->getTitle()->getPrefixedText(),
 				]
 			)
 		);
