@@ -156,7 +156,9 @@ class WikiSEO {
 	 * @param OutputPage $out
 	 */
 	public function addMetadataToPage( OutputPage $out ): void {
-		$this->modifyPageTitle( $out );
+		if ( $out->getPageTitle() === $out->getDisplayTitle() ) {
+			$this->modifyPageTitle( $out );
+		}
 
 		MediaWikiServices::getInstance()->getHookContainer()->run(
 			'WikiSEOPreAddMetadata',
