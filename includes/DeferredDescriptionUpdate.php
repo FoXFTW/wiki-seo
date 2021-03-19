@@ -63,30 +63,23 @@ class DeferredDescriptionUpdate implements DeferrableUpdate {
 			return;
 		}
 
+		if ( $description === '' ) {
+			return;
+		}
+
 		$dbl = MediaWikiServices::getInstance()->getDBLoadBalancer();
 		$db = $dbl->getConnection( $dbl->getWriterIndex() );
 
-		$db->delete(
+		$db->insert(
 			'page_props',
 			[
 				'pp_page' => $this->title->getArticleID(),
 				'pp_propname' => 'description',
+				'pp_value' => $description,
+				'pp_sortkey' => null,
 			],
 			__METHOD__
 		);
-
-		if ( $description !== '' ) {
-			$db->insert(
-				'page_props',
-				[
-					'pp_page' => $this->title->getArticleID(),
-					'pp_propname' => 'description',
-					'pp_value' => $description,
-					'pp_sortkey' => null,
-				],
-				__METHOD__
-			);
-		}
 	}
 
 	/**
