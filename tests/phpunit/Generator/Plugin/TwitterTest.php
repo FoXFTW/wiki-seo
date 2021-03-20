@@ -43,7 +43,7 @@ class TwitterTest extends GeneratorTest {
 
 		self::assertArrayHasKey( 'twitter:site', $out->getHeadItemsArray() );
 		self::assertEquals(
-			'<meta property="twitter:site" content="@TestKey"/>',
+			'<meta name="twitter:site" content="@TestKey"/>',
 			$out->getHeadItemsArray()['twitter:site']
 		);
 	}
@@ -63,7 +63,7 @@ class TwitterTest extends GeneratorTest {
 
 		self::assertArrayHasKey( 'twitter:site', $out->getHeadItemsArray() );
 		self::assertEquals(
-			'<meta property="twitter:site" content="@TestKey"/>',
+			'<meta name="twitter:site" content="@TestKey"/>',
 			$out->getHeadItemsArray()['twitter:site']
 		);
 	}
@@ -80,7 +80,7 @@ class TwitterTest extends GeneratorTest {
 
 		self::assertArrayHasKey( 'twitter:card', $out->getHeadItemsArray() );
 		self::assertEquals(
-			'<meta property="twitter:card" content="summary_large_image"/>',
+			'<meta name="twitter:card" content="summary_large_image"/>',
 			$out->getHeadItemsArray()['twitter:card']
 		);
 	}
@@ -100,7 +100,7 @@ class TwitterTest extends GeneratorTest {
 
 		self::assertArrayHasKey( 'twitter:card', $out->getHeadItemsArray() );
 		self::assertEquals(
-			'<meta property="twitter:card" content="summary"/>',
+			'<meta name="twitter:card" content="summary"/>',
 			$out->getHeadItemsArray()['twitter:card']
 		);
 	}
