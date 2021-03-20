@@ -27,12 +27,7 @@ use Html;
  * @package MediaWiki\Extension\WikiSEO\Generator\Plugins
  */
 class Twitter extends OpenGraph {
-	/**
-	 * Page title property name
-	 *
-	 * @var string
-	 */
-	protected $titlePropertyName = 'twitter:title';
+	protected static $htmlElementPropertyKey = 'name';
 
 	/**
 	 * Twitter constructor.
@@ -43,10 +38,7 @@ class Twitter extends OpenGraph {
 
 		$this->conversions = array_merge(
 			$this->conversions, [
-			'twitter_site' => 'twitter:site',
-			'description' => 'twitter:description',
-			'image' => 'twitter:image',
-			'image_alt' => 'twitter:image:alt'
+			'twitter_site' => 'twitter:site'
 			]
 		);
 	}
