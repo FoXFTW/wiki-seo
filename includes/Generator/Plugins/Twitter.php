@@ -38,7 +38,7 @@ class Twitter extends OpenGraph {
 
 		$this->conversions = array_merge(
 			$this->conversions, [
-			'twitter_site' => 'twitter:site'
+				'twitter_site' => 'twitter:site'
 			]
 		);
 	}
@@ -58,8 +58,8 @@ class Twitter extends OpenGraph {
 		$this->outputPage->addHeadItem(
 			'twitter:card', Html::element(
 				'meta', [
-				self::$htmlElementPropertyKey => 'twitter:card',
-				self::$htmlElementContentKey => $twitterCardType,
+					self::$htmlElementPropertyKey => 'twitter:card',
+					self::$htmlElementContentKey => $twitterCardType,
 				]
 			)
 		);
@@ -85,8 +85,8 @@ class Twitter extends OpenGraph {
 		$this->outputPage->addHeadItem(
 			'twitter:site', Html::element(
 				'meta', [
-				self::$htmlElementPropertyKey => 'twitter:site',
-				self::$htmlElementContentKey => $twitterSiteHandle,
+					self::$htmlElementPropertyKey => 'twitter:site',
+					self::$htmlElementContentKey => $twitterSiteHandle,
 				]
 			)
 		);
