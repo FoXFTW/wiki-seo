@@ -27,8 +27,6 @@ use Html;
  * @package MediaWiki\Extension\WikiSEO\Generator\Plugins
  */
 class Twitter extends OpenGraph {
-	protected static $htmlElementPropertyKey = 'name';
-
 	/**
 	 * Twitter constructor.
 	 * Updates some tag name conversions
@@ -55,14 +53,7 @@ class Twitter extends OpenGraph {
 
 		$twitterCardType = $this->getConfigValue( 'TwitterCardType' ) ?? 'summary_large_image';
 
-		$this->outputPage->addHeadItem(
-			'twitter:card', Html::element(
-				'meta', [
-					self::$htmlElementPropertyKey => 'twitter:card',
-					self::$htmlElementContentKey => $twitterCardType,
-				]
-			)
-		);
+		$this->outputPage->addMeta( 'twitter:card', $twitterCardType );
 	}
 
 	/**
@@ -82,13 +73,6 @@ class Twitter extends OpenGraph {
 			$this->conversions['twitter_site']
 		);
 
-		$this->outputPage->addHeadItem(
-			'twitter:site', Html::element(
-				'meta', [
-					self::$htmlElementPropertyKey => 'twitter:site',
-					self::$htmlElementContentKey => $twitterSiteHandle,
-				]
-			)
-		);
+		$this->outputPage->addMeta( 'twitter:site', $twitterSiteHandle );
 	}
 }
